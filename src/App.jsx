@@ -2,12 +2,12 @@ import Heading from "./components/Heading";
 import Navbar from "./components/Navbar";
 import NoteList from "./components/NotesList";
 import InputNotes from "./components/InputNotes";
-import getData from "./data/getData";
 import { useState } from "react";
+import { getInitialData } from "./utils";
 
-// ? mohon kritik dan saran agar saya bisa improve lagi, thank you
+
 const App = () => {
-  const [notes, setNotes] = useState(getData());
+  const [notes, setNotes] = useState(getInitialData());
 
   const onDeleteHandler = id => {
     const result = notes.filter(note => note.id !== id);
@@ -33,7 +33,7 @@ const App = () => {
           title,
           body,
           archived: false,
-          createdAt: new Date()
+          createdAt: new Date().toISOString(),
         }
       ];
     });
@@ -41,7 +41,7 @@ const App = () => {
 
   const searchNotesHandler = (result, value) => {
     value === ''
-      ? setNotes(getData())
+      ? setNotes(getInitialData())
       : setNotes(result);
   };
 
@@ -57,18 +57,24 @@ const App = () => {
         searchNotesHandler={searchNotesHandler}
       />
       <InputNotes addNotes={addProductHandler} />
-      <Heading title="Catatan Aktif" />
-      <NoteList
-        notes={notes}
-        archive={false}
-        {...handleClick}
-      />
-      <Heading title="Arsip" />
-      <NoteList
-        notes={notes}
-        archive={true}
-        {...handleClick}
-      />
+      {notes.length !== 0 ? (
+        <>
+          <Heading title="Catatan Aktif" />
+          <NoteList
+            notes={notes}
+            archive={false}
+            {...handleClick}
+          />
+          <Heading title="Arsip" />
+          <NoteList
+            notes={notes}
+            archive={true}
+            {...handleClick}
+          />
+        </>
+      ) : (
+        <h1 className="text-center text-4xl my-10 text-slate-800">Tidak Ada Catatan</h1>
+      )}
     </div>
   );
 };

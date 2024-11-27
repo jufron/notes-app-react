@@ -1,17 +1,8 @@
+import { showFormattedDate } from "../utils";
 import Button from "./Button";
 
 
 const NoteItem = ({ id, title, body, createdAt, archived, onDeleteHandler, onArchiveActiveHandler }) => {
-
-  const showFormattedDate = (date) => {
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }
-    return new Date(date).toLocaleDateString("id-ID", options)
-  };
 
   const formattedDate = showFormattedDate(createdAt);
 
